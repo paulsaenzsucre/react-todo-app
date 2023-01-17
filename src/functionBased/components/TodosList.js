@@ -24,7 +24,9 @@ const TodosList = ({
 );
 
 TodosList.propTypes = {
-  todos: PropTypes.arrayOf(TodoItem).isRequired,
+  todos: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  })).isRequired,
   handleChangeProps: PropTypes.func.isRequired,
   deleteTodoProps: PropTypes.func.isRequired,
   setUpdate: PropTypes.func.isRequired,

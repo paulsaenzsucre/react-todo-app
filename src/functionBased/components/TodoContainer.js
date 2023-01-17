@@ -68,7 +68,7 @@ const TodoContainer = () => {
       <Navbar />
       <Routes>
         <Route
-          exact
+          exact="true"
           path="/"
           element={(
             <div className="container">
@@ -85,7 +85,7 @@ const TodoContainer = () => {
             </div>
         )}
         />
-        <Route path="/about" element={<About />} />
+        <Route path="/about/*" element={<About />} />
         <Route path="*" element={<NotMatch />} />
       </Routes>
     </>
