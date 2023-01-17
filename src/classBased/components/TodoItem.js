@@ -1,9 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './TodoItem.module.css';
 
 class TodoItem extends React.Component {
-  state = {
-    editing: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      editing: false,
+    };
   }
 
   handleEditing = () => {
@@ -26,12 +30,20 @@ class TodoItem extends React.Component {
       textDecoration: 'line-through',
     };
 
-    const { completed, id, title } = this.props.todo;
+    const {
+      todo,
+      setUpdate,
+      handleChangeProps,
+      deleteTodoProps,
+    } = this.props;
 
-    let viewMode = {};
-    let editMode = {};
+    const { completed, id, title } = todo;
+    const { editing } = this.state;
 
-    if (this.state.editing) {
+    const viewMode = {};
+    const editMode = {};
+
+    if (editing) {
       viewMode.display = 'none';
     } else {
       editMode.display = 'none';
@@ -44,27 +56,39 @@ class TodoItem extends React.Component {
             type="checkbox"
             className={styles.checkbox}
             checked={completed}
-            onChange={() => this.props.handleChangeProps(id)}
+            onChange={() => handleChangeProps(id)}
           />
-          <button onClick={() => this.props.deleteTodoProps(id)}>
+          <button type="button" onClick={() => deleteTodoProps(id)}>
             Delete
           </button>
           <span style={completed ? completedStyle : null}>
             {title}
           </span>
         </div>
-        <input type="text"
+        <input
+          type="text"
           style={editMode}
           className={styles.textInput}
           value={title}
           onChange={(e) => {
-            this.props.setUpdate(e.target.value, id);
+            setUpdate(e.target.value, id);
           }}
           onKeyDown={this.handleUpdatedDone}
         />
       </li>
     );
-  }  
+  }
 }
+
+TodoItem.propTypes = {
+  todo: PropTypes.shape({
+    completed: PropTypes.bool.isRequired,
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
+  setUpdate: PropTypes.func.isRequired,
+  handleChangeProps: PropTypes.func.isRequired,
+  deleteTodoProps: PropTypes.func.isRequired,
+};
 
 export default TodoItem;
